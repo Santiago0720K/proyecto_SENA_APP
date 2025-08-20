@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio - SENA APP{% endblock %}
+
+{% block content %}
+    <div class="particles" id="particles"></div>
+    <div class="overlay" id="overlay"></div>
+    <main class="main-content">
+        <div class="hero-section">
+            <div class="hero-logo">
+                <img src="https://www.soydebuenaventura.com/media/transparent/20230802_logosena.png" alt="Logo SENA">
+            </div>
+            
+            <h1 class="hero-title">Bienvenido a SENA APP</h1>
+            <h2 class="hero-subtitle">Sistema de Gestión de Aprendices</h2>
+            <p class="hero-description">
+                Plataforma moderna para la administración y seguimiento de aprendices del 
+                Servicio Nacional de Aprendizaje. Gestiona de manera eficiente toda la información 
+                de estudiantes, programas y reportes académicos.
+            </p>
+            
+            <div class="cta-buttons">
+                <a href="{% url 'aprendices:lista_aprendices' %}" class="btn btn-primary">
+                    <i class="fas fa-users"></i>
+                    Ver Aprendices
+                </a>
+                <a href="{% url 'instructores:lista_instructores' %}" class="btn btn-primary">
+                    <i class="fas fa-tools"></i>
+                    Ver Instructores
+                </a>
+                <a href="{% url 'admin:index' %}" class="btn btn-primary">
+                    <i class="fas fa-tools"></i>
+                    Panel Administrativo
+                </a>
+                <a href="{% url 'programas:lista_programas' %}" class="btn btn-primary">
+                    <i class="bi bi-calendar4-week"></i>
+                    Ver Programas
+                </a>
+                <a href="{% url 'aulas:lista_aulas' %}" class="btn btn-primary">
+                    <i class="fas fa-door-open"></i>
+                    Ver Aulas
+                </a>
+                <p>TEST PRUEBAS</p>
+            </div>
+        </div>
+    </main>
+{% endblock %}

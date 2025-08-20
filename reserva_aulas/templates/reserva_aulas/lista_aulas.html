@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Listado de Aulas{% endblock %}
+
+{% block content %}
+    <div class="content-wrapper">
+        <div class="content-card animate__animated animate__fadeIn">
+            <h1 class="page-title">
+                <i class="fas fa-list"></i>
+                Listado de Aulas
+            </h1>
+            <p class="page-subtitle">Explora y gestiona las aulas registradas en el sistema</p>
+
+            <div class="d-flex justify-content-end mb-4">
+                <!-- Se ha mejorado el estilo del botón para hacerlo más visible -->
+                <a href="{% url 'aulas:registrar_aula' %}" class="btn btn-dark btn-lg shadow-sm animate__animated animate__pulse animate__infinite text-white">
+                    <i class="fas fa-plus-circle me-2"></i>
+                    Nueva Aula
+                </a>
+            </div>
+
+            {% if messages %}
+            <ul class="messages list-unstyled">
+                {% for message in messages %}
+                    <li {% if message.tags %}class="alert alert-{{ message.tags }}"{% endif %}>
+                        {{ message }}
+                    </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+            <div class="table-responsive">
+                <table class="table table-custom">
+                    <thead>
+                        <tr>
+                            <th>Número de Aula</th>
+                            <th>Nombre</th>
+                            <th>Tipo</th>
+                            <th>Capacidad</th>
+                            <th>Localización</th>
+                            <th>Estado</th>
+                            <th>Equipos</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for aula in aulas %}
+                        <tr>
+                            <td>{{ aula.numero_aula }}</td>
+                            <td>{{ aula.nombre_aula|default:"N/A" }}</td>
+                            <td>{{ aula.get_tipo_aula_display }}</td>
+                            <td>{{ aula.capacidad }}</td>
+                            <td>{{ aula.get_sede_display }}</td>
+                            <td>
+                                <span class="badge 
+                                    {% if aula.estado == 'disponible' %}bg-success{% endif %}
+                                    {% if aula.estado == 'ocupada' %}bg-danger{% endif %}
+                                    {% if aula.estado == 'mantenimiento' %}bg-warning{% endif %}
+                                    {% if aula.estado == 'fuera_servicio' %}bg-secondary{% endif %}">
+                                    {{ aula.get_estado_display }}
+                                </span>
+                            </td>
+                            <td>{{ aula.equipamiento|default:"Ninguno" }}</td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a href="#" class="btn btn-sm btn-info text-white me-2" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-sm btn-danger" title="Eliminar">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="8" class="text-center py-4">
+                                <i class="fas fa-exclamation-circle me-2"></i> No hay aulas registradas todavía.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

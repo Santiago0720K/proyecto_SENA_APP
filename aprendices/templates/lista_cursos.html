@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Cursos SENA - SENA APP</title>
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(180deg, 
+                #0d4f1c 0%,
+                #1e7e34 20%,
+                #28a745 50%,
+                #20c997 80%,
+                #a8e6cf 100%
+            );
+            min-height: 100vh;
+        }
+        
+        .main-container {
+            padding: 2rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        .header-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .content-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-back {
+            background: #20c997;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-back:hover {
+            background: #17a2b8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(32, 201, 151, 0.4);
+        }
+        
+        .titulo-principal {
+            color: #1e7e34;
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        .badge-total {
+            background: #17a2b8;
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 25px;
+            font-weight: 600;
+        }
+        
+        .btn-nuevo {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-nuevo:hover {
+            background: linear-gradient(135deg, #1e7e34, #17a2b8);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        }
+        
+        .table thead th {
+            background: linear-gradient(135deg, #1e7e34 0%, #28a745 100%);
+            color: white;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: none;
+            padding: 15px 12px;
+        }
+        
+        .table tbody tr {
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .table tbody tr:hover {
+            background: linear-gradient(90deg, rgba(32, 201, 151, 0.1) 0%, rgba(30, 126, 52, 0.1) 100%);
+            transform: translateX(5px);
+            box-shadow: 5px 0 15px rgba(0,0,0,0.1);
+        }
+        
+        .codigo-link {
+            color: #1e7e34;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .codigo-link:hover {
+            color: #0d4f1c;
+            transform: scale(1.05);
+        }
+        
+        .estado-eje {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #28a745;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-weight: 600;
+        }
+        
+        .estado-finalizado {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #dc3545;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-weight: 600;
+        }
+        
+        .estado-proceso {
+            background: #fff3cd;
+            color: #856404;
+            border: 2px solid #ffc107;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-weight: 600;
+        }
+        
+        .btn-editar {
+            background: #17a2b8;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 5px 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-editar:hover {
+            background: #138496;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(23, 162, 184, 0.3);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #1e7e34;
+        }
+        
+        .empty-icon {
+            font-size: 5rem;
+            color: #20c997;
+            margin-bottom: 1.5rem;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in-row {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1rem;
+            }
+            
+            .header-section, .content-card {
+                padding: 1.5rem;
+            }
+            
+            .d-flex.justify-content-between {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .titulo-principal {
+                font-size: 1.3rem;
+            }
+            
+            .table {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- Header -->
+        <div class="header-section">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <div class="d-flex align-items-center mb-2 mb-md-0">
+                    <a href="{% url 'aprendices:inicio' %}" class="btn-back me-3">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <h2 class="titulo-principal">
+                        <i class="fas fa-book me-2"></i>Lista de Cursos SENA
+                    </h2>
+                </div>
+                
+                <div class="d-flex align-items-center gap-3">
+                    <span class="badge-total">
+                        <i class="fas fa-graduation-cap me-1"></i>
+                        Total: {{ total_cursos }} Cursos
+                    </span>
+                    <a href="{% url 'admin:aprendices_curso_add' %}" class="btn-nuevo">
+                        <i class="fas fa-plus me-2"></i>Nuevo Curso
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        {% if lista_cursos %}
+            <!-- Tabla de Cursos -->
+            <div class="content-card">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th><i class="fas fa-hashtag me-1"></i> Código</th>
+                                <th><i class="fas fa-book me-1"></i> Nombre del Curso</th>
+                                <th><i class="fas fa-certificate me-1"></i> Programa</th>
+                                <th><i class="fas fa-user-tie me-1"></i> Instructor</th>
+                                <th><i class="fas fa-calendar-alt me-1"></i> F. Inicio</th>
+                                <th><i class="fas fa-calendar-check me-1"></i> F. Fin</th>
+                                <th><i class="fas fa-clock me-1"></i> Horario</th>
+                                <th><i class="fas fa-info-circle me-1"></i> Estado</th>
+                                <th><i class="fas fa-cogs me-1"></i> Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for curso in lista_cursos %}
+                            <tr class="fade-in-row" style="animation-delay: {{ forloop.counter0 }}00ms;">
+                                <td>
+                                    <a href="curso/{{ curso.id }}" class="codigo-link">
+                                        <i class="fas fa-external-link-alt me-1"></i>{{ curso.codigo }}
+                                    </a>
+                                </td>
+                                <td class="fw-semibold">{{ curso.nombre }}</td>
+                                <td class="text-muted small">{{ curso.programa }}</td>
+                                <td>
+                                    <small>
+                                        <i class="fas fa-user me-1 text-muted"></i>
+                                        {{ curso.instructor_coordinador }}
+                                    </small>
+                                </td>
+                                <td>
+                                    <span class="badge bg-light text-dark">
+                                        {{ curso.fecha_inicio|date:"d/m/Y" }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-light text-dark">
+                                        {{ curso.fecha_fin|date:"d/m/Y" }}
+                                    </span>
+                                </td>
+                                <td class="small text-muted">
+                                    <i class="fas fa-calendar-week me-1"></i>
+                                    {{ curso.horario }}
+                                </td>
+                                <td>
+                                    {% if curso.estado == 'EJE' %}
+                                        <span class="estado-eje">
+                                            <i class="fas fa-play me-1"></i>{{ curso.estado }}
+                                        </span>
+                                    {% elif curso.estado == 'FINALIZADO' %}
+                                        <span class="estado-finalizado">
+                                            <i class="fas fa-stop me-1"></i>{{ curso.estado }}
+                                        </span>
+                                    {% else %}
+                                        <span class="estado-proceso">
+                                            <i class="fas fa-clock me-1"></i>{{ curso.estado }}
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{% url 'admin:aprendices_curso_change' curso.pk %}" class="btn-editar">
+                                        <i class="fas fa-edit me-1"></i>Editar
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        {% else %}
+            <!-- Estado vacío -->
+            <div class="content-card empty-state">
+                <div class="empty-icon">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                <h4 class="mb-3">No hay Cursos registrados</h4>
+                <p class="text-muted mb-4">Aún no se han registrado cursos en el sistema.</p>
+                <a href="{% url 'admin:aprendices_curso_add' %}" class="btn-nuevo">
+                    <i class="fas fa-plus me-2"></i>Registrar Primer Curso
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animación escalonada para las filas
+            const rows = document.querySelectorAll('.fade-in-row');
+            rows.forEach((row, index) => {
+                row.style.animationDelay = `${index * 100}ms`;
+            });
+            
+            // Efectos hover para enlaces
+            const links = document.querySelectorAll('.codigo-link');
+            links.forEach(link => {
+                link.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.05) translateX(3px)';
+                });
+                
+                link.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1) translateX(0)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

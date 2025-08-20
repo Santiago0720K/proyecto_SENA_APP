@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalle de Instructor - SENA APP{% endblock %}
+
+{% block content %}
+<div class="container py-4 animate__animated animate__fadeIn">
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'instructores:lista_instructores' %}">Instructores</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        {{ instructor.nombre_completo }}
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="content-card shadow-sm p-4 animate__animated animate__fadeInUp">
+                <div class="row">
+                    <div class="col-md-3 text-center mb-3 mb-md-0">
+                        <div class="profile-avatar mb-3">
+                            <i class="fas fa-user-tie text-white" style="font-size: 3rem;"></i>
+                        </div>
+                        <h4 class="text-primary fw-bold">{{ instructor.nombre_completo }}</h4>
+                        <p class="text-muted mb-0">{{ instructor.documento_identidad }}</p>
+                        <hr class="d-md-none">
+                    </div>
+                    <div class="col-md-9">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="mb-0 fw-bold">Información de Contacto</h5>
+                            <a href="{% url 'admin:instructores_instructor_change' instructor.pk %}" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-pencil-alt me-1"></i> Editar Perfil
+                            </a>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">
+                                        <i class="fas fa-envelope me-2 text-success"></i>
+                                        <a href="mailto:{{ instructor.correo }}" class="text-dark">{{ instructor.correo }}</a>
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-phone me-2 text-success"></i>
+                                        <span class="text-dark">{{ instructor.telefono }}</span>
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-map-marker-alt me-2 text-success"></i>
+                                        <span class="text-dark">{{ instructor.ciudad }}</span>
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-home me-2 text-success"></i>
+                                        <span class="text-dark">{{ instructor.direccion }}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-6">
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">
+                                        <i class="fas fa-id-card me-2 text-success"></i>
+                                        <span class="text-dark">{{ instructor.get_tipo_documento_display }}</span>
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-graduation-cap me-2 text-success"></i>
+                                        <span class="text-dark">{{ instructor.get_nivel_educativo_display }}</span>
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-briefcase me-2 text-success"></i>
+                                        <span class="text-dark">{{ instructor.especialidad }}</span>
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-calendar-alt me-2 text-success"></i>
+                                        <span class="text-dark">Nacimiento: {{ instructor.fecha_nacimiento|date:"d/m/Y" }}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .profile-avatar {
+        width: 100px;
+        height: 100px;
+        background-color: #3f51b5; /* Un color de la paleta del SENA */
+        color: #fff;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 2rem;
+        margin: auto;
+    }
+</style>
+{% endblock %}

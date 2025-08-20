@@ -1,0 +1,429 @@
+{% extends 'base.html' %}
+{% block title %}Detalle del Aprendiz - SENA APP{% endblock %}
+
+{% block content %}
+<div class="content-wrapper" id="contentWrapper">
+    <div class="container py-4 animate__animated animate__fadeIn">
+        <div class="row justify-content-center">
+            <div class="col-xl-10 col-lg-11">
+                <div class="text-center mb-4">
+                    <h1 class="titulo-lista mb-3">
+                        <i class="fas fa-user-circle me-3"></i>
+                        Perfil del Aprendiz
+                    </h1>
+                    <p class="text-white-50">Información detallada del estudiante SENA</p>
+                </div>
+
+                <div class="content-card position-relative overflow-hidden">
+                    <div class="position-absolute top-0 end-0 m-3">
+                        <span class="badge bg-success fs-6 px-3 py-2 rounded-pill">
+                            <i class="fas fa-check-circle me-1"></i>
+                            Activo
+                        </span>
+                    </div>
+
+                    <div class="row g-0">
+                        <div class="col-lg-4 d-flex align-items-center justify-content-center p-4"
+                            style="background: linear-gradient(135deg, #1e7e34 0%, #28a745 100%); border-radius: 20px 0 0 20px;">
+                            <div class="text-center text-white">
+                                <div class="profile-avatar mx-auto mb-3">
+                                    <i class="fas fa-user-graduate"></i>
+                                </div>
+
+                                <h3 class="fw-bold mb-2">{{ aprendiz.nombre }}</h3>
+                                <h4 class="fw-semibold mb-3 opacity-75">{{ aprendiz.apellido }}</h4>
+
+                                <div class="program-badge">
+                                    <i class="fas fa-graduation-cap me-2"></i>
+                                    <small>{{ aprendiz.programa|truncatechars:30 }}</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-8 p-4">
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <div class="info-field">
+                                        <label class="info-label">
+                                            <i class="fas fa-id-card me-2"></i>
+                                            Documento de Identidad
+                                        </label>
+                                        <div class="info-value">
+                                            {{ aprendiz.documento_identidad }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="info-field">
+                                        <label class="info-label">
+                                            <i class="fas fa-envelope me-2"></i>
+                                            Correo Electrónico
+                                        </label>
+                                        <div class="info-value">
+                                            <a href="mailto:{{ aprendiz.correo }}" class="email-link">
+                                                {{ aprendiz.correo }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="info-field">
+                                        <label class="info-label">
+                                            <i class="fas fa-phone me-2"></i>
+                                            Teléfono
+                                        </label>
+                                        <div class="info-value">
+                                            {{ aprendiz.telefono }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="info-field">
+                                        <label class="info-label">
+                                            <i class="fas fa-map-marker-alt me-2"></i>
+                                            Ciudad
+                                        </label>
+                                        <div class="info-value">
+                                            {{ aprendiz.ciudad }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="info-field">
+                                        <label class="info-label">
+                                            <i class="fas fa-calendar-alt me-2"></i>
+                                            Fecha de Nacimiento
+                                        </label>
+                                        <div class="info-value">
+                                            {{ aprendiz.fecha_nacimiento|date:"d/m/Y" }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="info-field">
+                                        <label class="info-label">
+                                            <i class="fas fa-book me-2"></i>
+                                            Programa de Formación
+                                        </label>
+                                        <div class="info-value program-full">
+                                            {{ aprendiz.programa }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="action-buttons mt-4 pt-3 border-top">
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <a href="{% url 'aprendices:lista_aprendices' %}" class="btn btn-outline-success w-100">
+                                            <i class="fas fa-arrow-left me-2"></i>
+                                            Volver a la Lista
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Estilos específicos para el perfil del aprendiz */
+
+/* Avatar circular grande */
+.profile-avatar {
+    width: 120px;
+    height: 120px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.profile-avatar::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transform: rotate(-45deg);
+    transition: transform 0.6s ease;
+}
+
+.profile-avatar:hover {
+    transform: scale(1.05);
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
+.profile-avatar:hover::before {
+    transform: rotate(-45deg) translate(50%, 50%);
+}
+
+.profile-avatar i {
+    font-size: 3.5rem;
+    color: white;
+    z-index: 2;
+    position: relative;
+}
+
+/* Badge del programa */
+.program-badge {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50px;
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+/* Campos de información */
+.info-field {
+    margin-bottom: 1.5rem;
+    animation: slideInUp 0.6s ease forwards;
+    animation-fill-mode: backwards;
+}
+
+.info-field:nth-child(1) { animation-delay: 0.1s; }
+.info-field:nth-child(2) { animation-delay: 0.2s; }
+.info-field:nth-child(3) { animation-delay: 0.3s; }
+.info-field:nth-child(4) { animation-delay: 0.4s; }
+.info-field:nth-child(5) { animation-delay: 0.5s; }
+.info-field:nth-child(6) { animation-delay: 0.6s; }
+
+.info-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #1e7e34;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.info-value {
+    background: #f8f9fa;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #495057;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.info-value::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(30, 126, 52, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.info-value:hover {
+    border-color: #28a745;
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.15);
+    transform: translateY(-1px);
+}
+
+.info-value:hover::before {
+    left: 100%;
+}
+
+/* Programa completo con estilo especial */
+.program-full {
+    background: linear-gradient(135deg, #e8f5e8, #f0f8f0);
+    border-left: 4px solid #28a745;
+    font-weight: 600;
+    color: #1e7e34;
+}
+
+/* Enlaces de email */
+.email-link {
+    color: #1e7e34;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.email-link:hover {
+    color: #28a745;
+    text-decoration: underline;
+}
+
+/* Botones mejorados */
+.btn {
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 12px 20px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #1e7e34, #28a745);
+    border-color: #1e7e34;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #155724, #1e7e34);
+    border-color: #155724;
+}
+
+.btn-outline-success:hover {
+    background: #28a745;
+    border-color: #28a745;
+    color: white;
+}
+
+.btn-secondary {
+    background: #6c757d;
+    border-color: #6c757d;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+    border-color: #545b62;
+}
+
+/* Animación de entrada */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Efectos para dispositivos móviles */
+@media (max-width: 768px) {
+    .col-lg-4[style*="background"] {
+        border-radius: 20px 20px 0 0 !important;
+        padding: 2rem 1rem !important;
+    }
+
+    .profile-avatar {
+        width: 100px;
+        height: 100px;
+    }
+
+    .profile-avatar i {
+        font-size: 2.5rem;
+    }
+
+    .info-field {
+        margin-bottom: 1rem;
+    }
+
+    .action-buttons .btn {
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* Estilos para impresión */
+@media print {
+    .action-buttons,
+    .menu-toggle,
+    .sidebar,
+    .particles {
+        display: none !important;
+    }
+
+    .content-card {
+        box-shadow: none !important;
+        border: 2px solid #1e7e34 !important;
+    }
+
+    .col-lg-4[style*="background"] {
+        background: #1e7e34 !important;
+        -webkit-print-color-adjust: exact;
+        color-adjust: exact;
+    }
+}
+</style>
+
+<script>
+// Inicialización
+document.addEventListener('DOMContentLoaded', function() {
+    // Ajustar el contenido cuando el sidebar esté activo
+    const contentWrapper = document.getElementById('contentWrapper');
+    const sidebar = document.getElementById('sidebar');
+    const menuToggle = document.getElementById('menuToggle');
+
+    function adjustContent() {
+        if (window.innerWidth > 768) {
+            if (sidebar && sidebar.classList.contains('active')) {
+                contentWrapper.classList.add('sidebar-open');
+            } else {
+                contentWrapper.classList.remove('sidebar-open');
+            }
+        }
+    }
+
+    if (menuToggle) {
+        menuToggle.addEventListener('click', () => {
+            setTimeout(adjustContent, 100);
+        });
+    }
+
+    window.addEventListener('resize', adjustContent);
+
+    // Efectos hover mejorados para los campos de información
+    document.querySelectorAll('.info-value').forEach(field => {
+        field.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-2px) scale(1.01)';
+        });
+
+        field.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+    });
+});
+</script>
+{% endblock %}
