@@ -1,52 +1,77 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import Aula
+from .forms import AulaForm
 
 def registrar_aula(request):
-
+    """Vista para registrar una nueva aula usando el formulario Django"""
+    
     if request.method == 'POST':
-        # 1. Obtiene los datos del formulario enviado por POST
-        numero_aula = request.POST.get('numeroAula')
-        nombre_aula = request.POST.get('nombreAula')
-        tipo_aula = request.POST.get('tipoAula')
-        capacidad = request.POST.get('capacidad')
-        sede = request.POST.get('sede')
-        estado = request.POST.get('estado')
-        descripcion = request.POST.get('descripcion')
+        form = AulaForm(request.POST)
         
-        # 2. Maneja los equipos (checkboxes) como una lista
-        equipos_list = request.POST.getlist('equipos')
-        equipos = ", ".join(equipos_list) # Convierte la lista a un string separado por comas
-
-        # 3. Crea una nueva instancia del modelo Aula
-        try:
-            aula_nueva = Aula.objects.create(
-                numero_aula=numero_aula,
-                nombre_aula=nombre_aula,
-                tipo_aula=tipo_aula,
-                capacidad=capacidad,
-                sede=sede,
-                estado=estado,
-                equipamiento=equipos,
-                descripcion=descripcion,
-            )
-            
-            # 4. Agrega un mensaje de éxito para mostrar en la plantilla
-            messages.success(request, f'¡Aula {aula_nueva.numero_aula} registrada exitosamente!')
-            
-            # 5. Redirige a la misma URL para evitar el reenvío del formulario
-            return redirect('aulas:registrar_aula')
-        except Exception as e:
-            # En caso de error, muestra un mensaje de advertencia
-            messages.warning(request, f'Ocurrió un error al registrar el aula: {e}')
-            return redirect('aulas:registrar_aula')
-            
-    # Si la solicitud no es POST (es decir, es GET), solo renderiza el formulario
-    return render(request, 'reserva_aulas/registrar_aula.html')
+        if form.is_valid():
+            try:
+                aula_nueva = form.save()
+                messages.success(request, f'¡Aula {aula_nueva.numero_aula} registrada exitosamente!')
+                return redirect('aulas:lista_aulas')
+            except Exception as e:
+                messages.error(request, f'Ocurrió un error al registrar el aula: {e}')
+        else:
+            # El formulario tiene errores - se mostrarán automáticamente en el template
+            messages.error(request, 'Por favor corrige los errores en el formulario.')
+    else:
+        form = AulaForm()
+    
+    context = {
+        'form': form
+    }
+    return render(request, 'reserva_aulas/registrar_aula.html', context)
 
 def lista_aulas(request):
+    """Vista para mostrar la lista de todas las aulas"""
     aulas = Aula.objects.all()
     context = {
         'aulas': aulas,
     }
     return render(request, 'reserva_aulas/lista_aulas.html', context)
+
+def editar_aula(request, aula_id):
+    """Vista para editar una aula existente"""
+    aula = get_object_or_404(Aula, id=aula_id)
+    
+    if request.method == 'POST':
+        form = AulaForm(request.POST, instance=aula)
+        
+        if form.is_valid():
+            try:
+                aula_actualizada = form.save()
+                messages.success(request, f'¡Aula {aula_actualizada.numero_aula} actualizada exitosamente!')
+                return redirect('aulas:lista_aulas')
+            except Exception as e:
+                messages.error(request, f'Ocurrió un error al actualizar el aula: {e}')
+        else:
+            messages.error(request, 'Por favor corrige los errores en el formulario.')
+    else:
+        form = AulaForm(instance=aula)
+    
+    context = {
+        'form': form,
+        'aula': aula,
+        'editando': True
+    }
+    return render(request, 'reserva_aulas/registrar_aula.html', context)
+
+def eliminar_aula(request, aula_id):
+    """Vista para eliminar una aula"""
+    aula = get_object_or_404(Aula, id=aula_id)
+    
+    if request.method == 'POST':
+        numero_aula = aula.numero_aula
+        aula.delete()
+        messages.success(request, f'Aula {numero_aula} eliminada exitosamente.')
+        return redirect('aulas:lista_aulas')
+    
+    context = {
+        'aula': aula
+    }
+    return render(request, 'reserva_aulas/confirmar_eliminar.html', context)
