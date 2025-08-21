@@ -62,16 +62,17 @@ def editar_aula(request, aula_id):
     return render(request, 'reserva_aulas/registrar_aula.html', context)
 
 def eliminar_aula(request, aula_id):
-    """Vista para eliminar una aula"""
+    """Vista para eliminar una aula directamente"""
     aula = get_object_or_404(Aula, id=aula_id)
     
-    if request.method == 'POST':
-        numero_aula = aula.numero_aula
+    # Guardamos el número del aula antes de eliminarla
+    numero_aula = aula.numero_aula
+    
+    try:
         aula.delete()
         messages.success(request, f'Aula {numero_aula} eliminada exitosamente.')
-        return redirect('aulas:lista_aulas')
+    except Exception as e:
+        messages.error(request, f'Error al eliminar el aula: {e}')
     
-    context = {
-        'aula': aula
-    }
-    return render(request, 'reserva_aulas/confirmar_eliminar.html', context)
+    # Siempre redirigir a la lista de aulas
+    return redirect('aulas:lista_aulas')

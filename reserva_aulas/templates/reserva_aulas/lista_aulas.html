@@ -64,10 +64,16 @@
                             <td>{{ aula.equipamiento|default:"Ninguno" }}</td>
                             <td>
                                 <div class="btn-group" role="group">
-                                    <a href="#" class="btn btn-sm btn-info text-white me-2" title="Editar">
+                                    <!-- Botón de Editar -->
+                                    <a href="{% url 'aulas:editar_aula' aula.id %}" class="btn btn-sm btn-info text-white me-2" title="Editar">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <a href="#" class="btn btn-sm btn-danger" title="Eliminar">
+                                    <!-- Botón de Eliminar con confirmación -->
+                                    <a href="{% url 'aulas:eliminar_aula' aula.id %}" 
+                                       class="btn btn-sm btn-danger btn-eliminar" 
+                                       title="Eliminar"
+                                       data-aula-numero="{{ aula.numero_aula }}"
+                                       data-aula-nombre="{{ aula.nombre_aula|default:'Sin nombre' }}">
                                         <i class="fas fa-trash-alt"></i>
                                     </a>
                                 </div>
@@ -85,4 +91,33 @@
             </div>
         </div>
     </div>
+
+    <!-- JavaScript para confirmación de eliminación -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Obtener todos los botones de eliminar
+            const botonesEliminar = document.querySelectorAll('.btn-eliminar');
+            
+            botonesEliminar.forEach(function(boton) {
+                boton.addEventListener('click', function(e) {
+                    e.preventDefault(); // Evitar que el enlace se ejecute inmediatamente
+                    
+                    const aulaNumero = this.dataset.aulaNumero;
+                    const aulaNombre = this.dataset.aulaNombre;
+                    const url = this.href;
+                    
+                    // Mostrar confirmación
+                    const confirmacion = confirm(
+                        `¿Estás seguro de que deseas eliminar el aula "${aulaNumero} - ${aulaNombre}"?\n\n` +
+                        'Esta acción no se puede deshacer.'
+                    );
+                    
+                    // Si confirma, redirigir a la URL de eliminación
+                    if (confirmacion) {
+                        window.location.href = url;
+                    }
+                });
+            });
+        });
+    </script>
 {% endblock %}
