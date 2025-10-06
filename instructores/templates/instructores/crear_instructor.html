@@ -3,128 +3,282 @@
 {% block title %}Agregar Instructor - SENA APP{% endblock %}
 
 {% block content %}
-<style>
-    .wizard-step {
-        display: none;
-    }
-    .wizard-step.active {
-        display: block;
-        animation: fadeIn 0.4s ease-in-out;
-    }
-    @keyframes fadeIn {
-        from {opacity: 0;}
-        to {opacity: 1;}
-    }
-    .step-indicator {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-        margin-bottom: 20px;
-    }
-    .step-indicator div {
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        background: #ccc;
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-    }
-    .step-indicator .active {
-        background: #198754;
-    }
-</style>
-
-<div class="container py-4">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <div class="card shadow-lg border-0">
-                <div class="card-header bg-success text-white text-center">
-                    <h4 class="mb-0"><i class="fas fa-user-plus"></i> Agregar Instructor</h4>
-                </div>
-                <div class="card-body">
-                    
-                    <!-- Indicador de pasos -->
-                    <div class="step-indicator mb-4">
-                        <div class="active">1</div>
-                        <div>2</div>
-                        <div>3</div>
+<div class="container-fluid px-3 px-md-4">
+    <div class="row justify-content-center mt-4">
+        <div class="col-12 col-lg-10 col-xl-8">
+            <!-- Card principal -->
+            <div class="card shadow-lg border-0" style="border-radius: 16px; overflow: hidden;">
+                <!-- Header -->
+                <div class="card-header text-white py-4" style="background: linear-gradient(135deg, #0c4b33, #1d8348);">
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-circle bg-white bg-opacity-25 p-3 me-3">
+                            <i class="fas fa-chalkboard-teacher fs-4"></i>
+                        </div>
+                        <div>
+                            <h3 class="mb-0 fw-bold">Agregar Instructor</h3>
+                            <small class="opacity-90">Complete todos los datos del instructor</small>
+                        </div>
                     </div>
+                </div>
 
-                    <form method="post">
+                <!-- Body -->
+                <div class="card-body p-4 p-md-5" style="background-color: #f8f9fa;">
+                    
+                    <!-- Mostrar mensajes -->
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+                                <i class="fas fa-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' %}exclamation-circle{% else %}info-circle{% endif %} me-2"></i>
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="post" novalidate>
                         {% csrf_token %}
 
-                        <!-- Paso 1 -->
-                        <div class="wizard-step active">
-                            <div class="mb-3">
-                                <label>{{ form.tipo_documento.label }}</label>
-                                {{ form.tipo_documento }}
+                        {% if form.non_field_errors %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            {{ form.non_field_errors }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        {% endif %}
+
+                        <!-- Sección: Información Personal -->
+                        <div class="mb-5">
+                            <h5 class="mb-4 pb-2 border-bottom" style="color: #0c4b33;">
+                                <i class="fas fa-user me-2"></i>Información Personal
+                            </h5>
+                            
+                            <div class="row g-4">
+                                <!-- Tipo de Documento -->
+                                <div class="col-md-6">
+                                    <label for="{{ form.tipo_documento.id_for_label }}" class="form-label fw-semibold text-dark d-flex align-items-center">
+                                        <i class="fas fa-file-alt text-success me-2"></i>
+                                        {{ form.tipo_documento.label }} <span class="text-danger ms-1">*</span>
+                                    </label>
+                                    {{ form.tipo_documento }}
+                                    {% if form.tipo_documento.errors %}
+                                        <div class="text-danger small mt-2">
+                                            <i class="fas fa-exclamation-triangle me-1"></i>
+                                            {{ form.tipo_documento.errors|join:", " }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Documento de Identidad -->
+                                <div class="col-md-6">
+                                    <label for="{{ form.documento_identidad.id_for_label }}" class="form-label fw-semibold text-dark d-flex align-items-center">
+                                        <i class="fas fa-id-card text-success me-2"></i>
+                                        {{ form.documento_identidad.label }} <span class="text-danger ms-1">*</span>
+                                    </label>
+                                    {{ form.documento_identidad }}
+                                    {% if form.documento_identidad.errors %}
+                                        <div class="text-danger small mt-2">
+                                            <i class="fas fa-exclamation-triangle me-1"></i>
+                                            {{ form.documento_identidad.errors|join:", " }}
+                                        </div>
+                                    {% endif %}
+                                    <small class="form-text text-muted d-block mt-1">Sin puntos ni comas</small>
+                                </div>
+
+                                <!-- Nombre -->
+                                <div class="col-md-6">
+                                    <label for="{{ form.nombre.id_for_label }}" class="form-label fw-semibold text-dark d-flex align-items-center">
+                                        <i class="fas fa-signature text-success me-2"></i>
+                                        {{ form.nombre.label }} <span class="text-danger ms-1">*</span>
+                                    </label>
+                                    {{ form.nombre }}
+                                    {% if form.nombre.errors %}
+                                        <div class="text-danger small mt-2">
+                                            <i class="fas fa-exclamation-triangle me-1"></i>
+                                            {{ form.nombre.errors|join:", " }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Apellido -->
+                                <div class="col-md-6">
+                                    <label for="{{ form.apellido.id_for_label }}" class="form-label fw-semibold text-dark d-flex align-items-center">
+                                        <i class="fas fa-user-tag text-success me-2"></i>
+                                        {{ form.apellido.label }} <span class="text-danger ms-1">*</span>
+                                    </label>
+                                    {{ form.apellido }}
+                                    {% if form.apellido.errors %}
+                                        <div class="text-danger small mt-2">
+                                            <i class="fas fa-exclamation-triangle me-1"></i>
+                                            {{ form.apellido.errors|join:", " }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Fecha de Nacimiento -->
+                                <div class="col-md-6">
+                                    <label for="{{ form.fecha_nacimiento.id_for_label }}" class="form-label fw-semibold text-dark d-flex align-items-center">
+                                        <i class="fas fa-birthday-cake text-success me-2"></i>
+                                        {{ form.fecha_nacimiento.label }} <span class="text-danger ms-1">*</span>
+                                    </label>
+                                    <div class="date-picker-container position-relative">
+                                        {{ form.fecha_nacimiento }}
+                                        <label for="{{ form.fecha_nacimiento.id_for_label }}" class="date-picker-icon position-absolute top-0 bottom-0 end-0 d-flex align-items-center px-3 bg-white border-start rounded-end pointer">
+                                            <i class="fas fa-calendar-alt text-success"></i>
+                                        </label>
+                                    </div>
+                                    {% if form.fecha_nacimiento.errors %}
+                                        <div class="text-danger small mt-2">
+                                            <i class="fas fa-exclamation-triangle me-1"></i>
+                                            {{ form.fecha_nacimiento.errors|join:", " }}
+                                        </div>
+                                    {% endif %}
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label>{{ form.documento_identidad.label }}</label>
-                                {{ form.documento_identidad }}
-                            </div>
-                            <div class="mb-3">
-                                <label>{{ form.nombre.label }}</label>
-                                {{ form.nombre }}
-                            </div>
-                            <div class="mb-3">
-                                <label>{{ form.apellido.label }}</label>
-                                {{ form.apellido }}
-                            </div>
-                            <button type="button" class="btn btn-success w-100 next-step">Siguiente</button>
                         </div>
 
-                        <!-- Paso 2 -->
-                        <div class="wizard-step">
-                            <div class="mb-3">
-                                <label>{{ form.telefono.label }}</label>
-                                {{ form.telefono }}
-                            </div>
-                            <div class="mb-3">
-                                <label>{{ form.correo.label }}</label>
-                                {{ form.correo }}
-                            </div>
-                            <div class="mb-3">
-                                <label>{{ form.ciudad.label }}</label>
-                                {{ form.ciudad }}
-                            </div>
-                            <div class="mb-3">
-                                <label>{{ form.direccion.label }}</label>
-                                {{ form.direccion }}
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <button type="button" class="btn btn-secondary prev-step">Atrás</button>
-                                <button type="button" class="btn btn-success next-step">Siguiente</button>
+                        <!-- Sección: Información de Contacto -->
+                        <div class="mb-5">
+                            <h5 class="mb-4 pb-2 border-bottom" style="color: #0c4b33;">
+                                <i class="fas fa-phone me-2"></i>Información de Contacto
+                            </h5>
+                            
+                            <div class="row g-4">
+                                <!-- Teléfono -->
+                                <div class="col-md-6">
+                                    <label for="{{ form.telefono.id_for_label }}" class="form-label fw-semibold text-dark d-flex align-items-center">
+                                        <i class="fas fa-mobile-alt text-success me-2"></i>
+                                        {{ form.telefono.label }}
+                                    </label>
+                                    {{ form.telefono }}
+                                    {% if form.telefono.errors %}
+                                        <div class="text-danger small mt-2">
+                                            <i class="fas fa-exclamation-triangle me-1"></i>
+                                            {{ form.telefono.errors|join:", " }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Correo -->
+                                <div class="col-md-6">
+                                    <label for="{{ form.correo.id_for_label }}" class="form-label fw-semibold text-dark d-flex align-items-center">
+                                        <i class="fas fa-envelope text-success me-2"></i>
+                                        {{ form.correo.label }}
+                                    </label>
+                                    {{ form.correo }}
+                                    {% if form.correo.errors %}
+                                        <div class="text-danger small mt-2">
+                                            <i class="fas fa-exclamation-triangle me-1"></i>
+                                            {{ form.correo.errors|join:", " }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Ciudad -->
+                                <div class="col-md-6">
+                                    <label for="{{ form.ciudad.id_for_label }}" class="form-label fw-semibold text-dark d-flex align-items-center">
+                                        <i class="fas fa-city text-success me-2"></i>
+                                        {{ form.ciudad.label }}
+                                    </label>
+                                    {{ form.ciudad }}
+                                    {% if form.ciudad.errors %}
+                                        <div class="text-danger small mt-2">
+                                            <i class="fas fa-exclamation-triangle me-1"></i>
+                                            {{ form.ciudad.errors|join:", " }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Dirección -->
+                                <div class="col-md-6">
+                                    <label for="{{ form.direccion.id_for_label }}" class="form-label fw-semibold text-dark d-flex align-items-center">
+                                        <i class="fas fa-map-marked-alt text-success me-2"></i>
+                                        {{ form.direccion.label }}
+                                    </label>
+                                    {{ form.direccion }}
+                                    {% if form.direccion.errors %}
+                                        <div class="text-danger small mt-2">
+                                            <i class="fas fa-exclamation-triangle me-1"></i>
+                                            {{ form.direccion.errors|join:", " }}
+                                        </div>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Paso 3 -->
-                        <div class="wizard-step">
-                            <div class="mb-3">
-                                <label>{{ form.nivel_educativo.label }}</label>
-                                {{ form.nivel_educativo }}
-                            </div>
-                            <div class="mb-3">
-                                <label>{{ form.especialidad.label }}</label>
-                                {{ form.especialidad }}
-                            </div>
-                            <div class="mb-3">
-                                <label>{{ form.anos_experiencia.label }}</label>
-                                {{ form.anos_experiencia }}
-                            </div>
-                            <div class="mb-3">
-                                <label>{{ form.fecha_nacimiento.label }}</label>
-                                {{ form.fecha_nacimiento }}
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <button type="button" class="btn btn-secondary prev-step">Atrás</button>
-                                <button type="submit" class="btn btn-success">Guardar Instructor</button>
+                        <!-- Sección: Formación y Experiencia -->
+                        <div class="mb-5">
+                            <h5 class="mb-4 pb-2 border-bottom" style="color: #0c4b33;">
+                                <i class="fas fa-graduation-cap me-2"></i>Formación y Experiencia
+                            </h5>
+                            
+                            <div class="row g-4">
+                                <!-- Nivel Educativo -->
+                                <div class="col-md-6">
+                                    <label for="{{ form.nivel_educativo.id_for_label }}" class="form-label fw-semibold text-dark d-flex align-items-center">
+                                        <i class="fas fa-school text-success me-2"></i>
+                                        {{ form.nivel_educativo.label }} <span class="text-danger ms-1">*</span>
+                                    </label>
+                                    {{ form.nivel_educativo }}
+                                    {% if form.nivel_educativo.errors %}
+                                        <div class="text-danger small mt-2">
+                                            <i class="fas fa-exclamation-triangle me-1"></i>
+                                            {{ form.nivel_educativo.errors|join:", " }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Especialidad -->
+                                <div class="col-md-6">
+                                    <label for="{{ form.especialidad.id_for_label }}" class="form-label fw-semibold text-dark d-flex align-items-center">
+                                        <i class="fas fa-lightbulb text-success me-2"></i>
+                                        {{ form.especialidad.label }} <span class="text-danger ms-1">*</span>
+                                    </label>
+                                    {{ form.especialidad }}
+                                    {% if form.especialidad.errors %}
+                                        <div class="text-danger small mt-2">
+                                            <i class="fas fa-exclamation-triangle me-1"></i>
+                                            {{ form.especialidad.errors|join:", " }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Años de Experiencia -->
+                                <div class="col-md-6">
+                                    <label for="{{ form.anos_experiencia.id_for_label }}" class="form-label fw-semibold text-dark d-flex align-items-center">
+                                        <i class="fas fa-clock text-success me-2"></i>
+                                        {{ form.anos_experiencia.label }} <span class="text-danger ms-1">*</span>
+                                    </label>
+                                    {{ form.anos_experiencia }}
+                                    {% if form.anos_experiencia.errors %}
+                                        <div class="text-danger small mt-2">
+                                            <i class="fas fa-exclamation-triangle me-1"></i>
+                                            {{ form.anos_experiencia.errors|join:", " }}
+                                        </div>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
 
+                        <!-- Nota informativa -->
+                        <div class="alert alert-info d-flex align-items-center" role="alert">
+                            <i class="fas fa-info-circle me-2 fs-5"></i>
+                            <small>
+                                Los campos marcados con <span class="text-danger fw-bold">*</span> son obligatorios.
+                            </small>
+                        </div>
+
+                        <!-- Botones de acción -->
+                        <div class="d-flex flex-column flex-sm-row justify-content-end gap-2 mt-4 pt-3 border-top">
+                            <a href="{% url 'instructores:lista_instructores' %}" 
+                               class="btn btn-outline-secondary btn-lg order-2 order-sm-1">
+                                <i class="fas fa-times me-2"></i>Cancelar
+                            </a>
+                            <button type="submit" 
+                                    class="btn btn-lg text-white order-1 order-sm-2 shadow-sm" 
+                                    style="background: linear-gradient(135deg, #0c4b33, #1d8348); border: none;">
+                                <i class="fas fa-save me-2"></i>Guardar Instructor
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -132,34 +286,92 @@
     </div>
 </div>
 
-<!-- Script de pasos -->
+<style>
+/* Estilos para campos de formulario */
+.form-control, .form-select {
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    background-color: #fff;
+    transition: all 0.25s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #1d8348;
+    box-shadow: 0 0 0 0.25rem rgba(29, 131, 72, 0.1);
+    outline: none;
+}
+
+/* Contenedor de fecha */
+.date-picker-container {
+    position: relative;
+}
+
+.date-picker-container input[type="date"] {
+    width: 100%;
+    padding-right: 2.8rem;
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    font-size: 1rem;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.date-picker-container input[type="date"]::-webkit-inner-spin-button,
+.date-picker-container input[type="date"]::-webkit-clear-button,
+.date-picker-container input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+}
+
+.date-picker-icon {
+    cursor: pointer;
+    z-index: 5;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border: 1px solid #ced4da;
+    border-left: none;
+    background-color: #f8f9fa;
+}
+
+.date-picker-icon:hover {
+    background-color: #e9ecef;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+    .card-body {
+        padding: 1.25rem !important;
+    }
+    .btn-lg {
+        width: 100%;
+    }
+}
+</style>
+
 <script>
-    const steps = document.querySelectorAll(".wizard-step");
-    const indicators = document.querySelectorAll(".step-indicator div");
-    let currentStep = 0;
+document.addEventListener('DOMContentLoaded', function () {
+    const dateInputs = document.querySelectorAll('input[type="date"]');
+    dateInputs.forEach(input => {
+        const container = input.closest('.date-picker-container');
+        if (!container) return;
 
-    document.querySelectorAll(".next-step").forEach(btn => {
-        btn.addEventListener("click", () => {
-            if (currentStep < steps.length - 1) {
-                steps[currentStep].classList.remove("active");
-                indicators[currentStep].classList.remove("active");
-                currentStep++;
-                steps[currentStep].classList.add("active");
-                indicators[currentStep].classList.add("active");
+        const icon = container.querySelector('.date-picker-icon');
+        if (!icon) return;
+
+        icon.addEventListener('click', () => {
+            input.focus();
+            if (typeof input.showPicker === 'function') {
+                try { input.showPicker(); } catch (e) {}
+            }
+        });
+
+        input.addEventListener('click', () => {
+            if (typeof input.showPicker === 'function') {
+                try { input.showPicker(); } catch (e) {}
             }
         });
     });
-
-    document.querySelectorAll(".prev-step").forEach(btn => {
-        btn.addEventListener("click", () => {
-            if (currentStep > 0) {
-                steps[currentStep].classList.remove("active");
-                indicators[currentStep].classList.remove("active");
-                currentStep--;
-                steps[currentStep].classList.add("active");
-                indicators[currentStep].classList.add("active");
-            }
-        });
-    });
+});
 </script>
 {% endblock %}
