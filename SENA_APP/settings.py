@@ -78,8 +78,12 @@ WSGI_APPLICATION = 'SENA_APP.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'masteruser',
+        'PASSWORD': 'masterpassword',
+        'HOST': 'db-sena-app.cxmy46480its.us-east-2.rds.amazonaws.com',
+        'PORT': '5432'
     }
 }
 
