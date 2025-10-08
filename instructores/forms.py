@@ -2,21 +2,139 @@ from django import forms
 from .models import Instructor
 
 class InstructorForm(forms.Form):
-    documento_identidad = forms.CharField(max_length=20, label="Documento de Identidad", help_text="Ingrese el número de documento de identidad del instructor.")
-    tipo_documento = forms.ChoiceField(choices=Instructor.TIPO_DOCUMENTO_CHOICES, label="Tipo de Documento", help_text="Seleccione el tipo de documento del instructor.")
-    nombre = forms.CharField(max_length=100, label="Nombre", help_text="Ingrese el nombre del instructor.")
-    apellido = forms.CharField(max_length=100, label="Apellido", help_text="Ingrese el apellido del instructor.")
-    telefono = forms.CharField(max_length=10, required=False, label="Teléfono", help_text="Ingrese el número de teléfono del instructor.")
-    correo = forms.EmailField(required=False, label="Correo Electrónico", help_text="Ingrese el correo electrónico del instructor.")
-    fecha_nacimiento = forms.DateField(label="Fecha de Nacimiento", help_text="Ingrese la fecha de nacimiento del instructor.")
-    ciudad = forms.CharField(max_length=100, required=False, label="Ciudad", help_text="Ingrese la ciudad de residencia del instructor.")
-    direccion = forms.CharField(widget=forms.Textarea, required=False, label="Dirección", help_text="Ingrese la dirección del instructor.")
-    nivel_educativo = forms.ChoiceField(choices=Instructor.NIVEL_EDUCATIVO_CHOICES, label="Nivel Educativo", help_text="Seleccione el nivel educativo del instructor.")
-    especialidad = forms.CharField(max_length=100, label="Especialidad", help_text="Ingrese la especialidad del instructor.")
-    anos_experiencia = forms.IntegerField(min_value=0, label="Años de Experiencia", help_text="Ingrese los años de experiencia del instructor.")
-    activo = forms.BooleanField(required=False, initial=True, label="Activo", help_text="Indique si el instructor está activo.")
-    fecha_vinculacion = forms.DateField(label="Fecha de Vinculación", help_text="Ingrese la fecha de vinculación del instructor.")
-    fecha_registro = forms.DateField(label="Fecha de Registro", help_text="Ingrese la fecha de registro del instructor.")
+    tipo_documento = forms.ChoiceField(
+        choices=Instructor.TIPO_DOCUMENTO_CHOICES, 
+        label="Tipo de Documento",
+        widget=forms.Select(attrs={
+            'class': 'form-select',
+        })
+    )
+    
+    documento_identidad = forms.CharField(
+        max_length=20, 
+        label="Documento de Identidad",
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Ingrese el número de documento'
+        })
+    )
+    
+    nombre = forms.CharField(
+        max_length=100, 
+        label="Nombre",
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Ingrese el nombre'
+        })
+    )
+    
+    apellido = forms.CharField(
+        max_length=100, 
+        label="Apellido",
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Ingrese el apellido'
+        })
+    )
+    
+    fecha_nacimiento = forms.DateField(
+        label="Fecha de Nacimiento",
+        widget=forms.DateInput(attrs={
+            'class': 'form-control',
+            'type': 'date'
+        })
+    )
+    
+    telefono = forms.CharField(
+        max_length=10, 
+        required=False, 
+        label="Teléfono",
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Ingrese el teléfono'
+        })
+    )
+    
+    correo = forms.EmailField(
+        required=False, 
+        label="Correo Electrónico",
+        widget=forms.EmailInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'ejemplo@correo.com'
+        })
+    )
+    
+    ciudad = forms.CharField(
+        max_length=100, 
+        required=False, 
+        label="Ciudad",
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Ingrese la ciudad'
+        })
+    )
+    
+    direccion = forms.CharField(
+        required=False, 
+        label="Dirección",
+        widget=forms.Textarea(attrs={
+            'class': 'form-control',
+            'placeholder': 'Ingrese la dirección completa',
+            'rows': 3
+        })
+    )
+    
+    nivel_educativo = forms.ChoiceField(
+        choices=Instructor.NIVEL_EDUCATIVO_CHOICES, 
+        label="Nivel Educativo",
+        widget=forms.Select(attrs={
+            'class': 'form-select',
+        })
+    )
+    
+    especialidad = forms.CharField(
+        max_length=100, 
+        label="Especialidad",
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Ingrese la especialidad'
+        })
+    )
+    
+    anos_experiencia = forms.IntegerField(
+        min_value=0, 
+        label="Años de Experiencia",
+        widget=forms.NumberInput(attrs={
+            'class': 'form-control',
+            'placeholder': '0',
+            'min': '0'
+        })
+    )
+    
+    activo = forms.BooleanField(
+        required=False, 
+        initial=True, 
+        label="Activo",
+        widget=forms.CheckboxInput(attrs={
+            'class': 'form-check-input'
+        })
+    )
+    
+    fecha_vinculacion = forms.DateField(
+        label="Fecha de Vinculación",
+        widget=forms.DateInput(attrs={
+            'class': 'form-control',
+            'type': 'date'
+        })
+    )
+    
+    fecha_registro = forms.DateField(
+        label="Fecha de Registro",
+        widget=forms.DateInput(attrs={
+            'class': 'form-control',
+            'type': 'date'
+        })
+    )
 
     def clean(self):
         cleaned_data = super().clean()
@@ -25,7 +143,7 @@ class InstructorForm(forms.Form):
         apellido = cleaned_data.get('apellido')
 
         if not documento or not nombre or not apellido:
-            raise forms.ValidationError("Todos los campos son obligatorios.")
+            raise forms.ValidationError("Todos los campos obligatorios deben ser completados.")
 
         return cleaned_data
 
@@ -35,6 +153,11 @@ class InstructorForm(forms.Form):
             raise forms.ValidationError("El documento debe contener solo números.")
         return documento
         
+    def clean_telefono(self):
+        telefono = self.cleaned_data.get('telefono')
+        if telefono and not telefono.isdigit():
+            raise forms.ValidationError("El teléfono debe contener solo números.")
+        return telefono
         
     def save(self):
         """Método para guardar el instructor en la base de datos"""

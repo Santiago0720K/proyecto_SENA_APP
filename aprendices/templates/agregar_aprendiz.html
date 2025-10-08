@@ -48,23 +48,25 @@
 
                         <!-- Sección: Información Personal -->
                         <div class="mb-5">
-                            <h5 class="mb-4 pb-2 border-bottom" style="color: #0c4b33;">
+                            <h5 class="mb-4 pb-2 border-bottom fw-bold" style="color: #0c4b33;">
                                 <i class="fas fa-id-card me-2"></i>Información Personal
                             </h5>
                             
                             <div class="row g-4">
                                 <!-- Documento de Identidad -->
                                 <div class="col-12">
-                                    <label for="{{ form.documento_identidad.id_for_label }}" class="form-label fw-semibold text-dark d-flex align-items-center">
+                                    <label for="{{ form.documento_identidad.id_for_label }}" class="form-label fw-bold text-dark">
                                         <i class="fas fa-id-card-alt text-success me-2"></i>
                                         {{ form.documento_identidad.label }}
-                                        <span class="text-danger ms-1">*</span>
+                                        <span class="text-danger">*</span>
                                     </label>
                                     {{ form.documento_identidad }}
                                     {% if form.documento_identidad.errors %}
                                     <div class="text-danger small mt-2">
                                         <i class="fas fa-exclamation-triangle me-1"></i>
-                                        {{ form.documento_identidad.errors|join:", " }}
+                                        {% for error in form.documento_identidad.errors %}
+                                            {{ error }}
+                                        {% endfor %}
                                     </div>
                                     {% endif %}
                                     <small class="form-text text-muted d-block mt-1">Ingrese el número sin puntos ni comas</small>
@@ -72,42 +74,46 @@
 
                                 <!-- Nombre -->
                                 <div class="col-12">
-                                    <label for="{{ form.nombre.id_for_label }}" class="form-label fw-semibold text-dark d-flex align-items-center">
+                                    <label for="{{ form.nombre.id_for_label }}" class="form-label fw-bold text-dark">
                                         <i class="fas fa-user text-success me-2"></i>
                                         {{ form.nombre.label }}
-                                        <span class="text-danger ms-1">*</span>
+                                        <span class="text-danger">*</span>
                                     </label>
                                     {{ form.nombre }}
                                     {% if form.nombre.errors %}
                                     <div class="text-danger small mt-2">
                                         <i class="fas fa-exclamation-triangle me-1"></i>
-                                        {{ form.nombre.errors|join:", " }}
+                                        {% for error in form.nombre.errors %}
+                                            {{ error }}
+                                        {% endfor %}
                                     </div>
                                     {% endif %}
                                 </div>
 
                                 <!-- Apellido -->
                                 <div class="col-12">
-                                    <label for="{{ form.apellido.id_for_label }}" class="form-label fw-semibold text-dark d-flex align-items-center">
+                                    <label for="{{ form.apellido.id_for_label }}" class="form-label fw-bold text-dark">
                                         <i class="fas fa-user-tag text-success me-2"></i>
                                         {{ form.apellido.label }}
-                                        <span class="text-danger ms-1">*</span>
+                                        <span class="text-danger">*</span>
                                     </label>
                                     {{ form.apellido }}
                                     {% if form.apellido.errors %}
                                     <div class="text-danger small mt-2">
                                         <i class="fas fa-exclamation-triangle me-1"></i>
-                                        {{ form.apellido.errors|join:", " }}
+                                        {% for error in form.apellido.errors %}
+                                            {{ error }}
+                                        {% endfor %}
                                     </div>
                                     {% endif %}
                                 </div>
 
                                 <!-- Fecha de Nacimiento -->
                                 <div class="col-12">
-                                    <label for="{{ form.fecha_nacimiento.id_for_label }}" class="form-label fw-semibold text-dark d-flex align-items-center">
+                                    <label for="{{ form.fecha_nacimiento.id_for_label }}" class="form-label fw-bold text-dark">
                                         <i class="fas fa-birthday-cake text-success me-2"></i>
                                         {{ form.fecha_nacimiento.label }}
-                                        <span class="text-danger ms-1">*</span>
+                                        <span class="text-danger">*</span>
                                     </label>
                                     <div class="date-picker-container position-relative">
                                         {{ form.fecha_nacimiento }}
@@ -118,7 +124,9 @@
                                     {% if form.fecha_nacimiento.errors %}
                                     <div class="text-danger small mt-2">
                                         <i class="fas fa-exclamation-triangle me-1"></i>
-                                        {{ form.fecha_nacimiento.errors|join:", " }}
+                                        {% for error in form.fecha_nacimiento.errors %}
+                                            {{ error }}
+                                        {% endfor %}
                                     </div>
                                     {% endif %}
                                     <small class="form-text text-muted d-block mt-1">Haga clic en el campo o en el ícono del calendario</small>
@@ -128,14 +136,14 @@
 
                         <!-- Sección: Información de Contacto -->
                         <div class="mb-5">
-                            <h5 class="mb-4 pb-2 border-bottom" style="color: #0c4b33;">
+                            <h5 class="mb-4 pb-2 border-bottom fw-bold" style="color: #0c4b33;">
                                 <i class="fas fa-address-book me-2"></i>Información de Contacto
                             </h5>
                             
                             <div class="row g-4">
                                 <!-- Teléfono -->
                                 <div class="col-12">
-                                    <label for="{{ form.telefono.id_for_label }}" class="form-label fw-semibold text-dark d-flex align-items-center">
+                                    <label for="{{ form.telefono.id_for_label }}" class="form-label fw-bold text-dark">
                                         <i class="fas fa-phone text-success me-2"></i>
                                         {{ form.telefono.label }}
                                     </label>
@@ -143,14 +151,16 @@
                                     {% if form.telefono.errors %}
                                     <div class="text-danger small mt-2">
                                         <i class="fas fa-exclamation-triangle me-1"></i>
-                                        {{ form.telefono.errors|join:", " }}
+                                        {% for error in form.telefono.errors %}
+                                            {{ error }}
+                                        {% endfor %}
                                     </div>
                                     {% endif %}
                                 </div>
 
                                 <!-- Correo -->
                                 <div class="col-12">
-                                    <label for="{{ form.correo.id_for_label }}" class="form-label fw-semibold text-dark d-flex align-items-center">
+                                    <label for="{{ form.correo.id_for_label }}" class="form-label fw-bold text-dark">
                                         <i class="fas fa-envelope text-success me-2"></i>
                                         {{ form.correo.label }}
                                     </label>
@@ -158,14 +168,16 @@
                                     {% if form.correo.errors %}
                                     <div class="text-danger small mt-2">
                                         <i class="fas fa-exclamation-triangle me-1"></i>
-                                        {{ form.correo.errors|join:", " }}
+                                        {% for error in form.correo.errors %}
+                                            {{ error }}
+                                        {% endfor %}
                                     </div>
                                     {% endif %}
                                 </div>
 
                                 <!-- Ciudad -->
                                 <div class="col-12">
-                                    <label for="{{ form.ciudad.id_for_label }}" class="form-label fw-semibold text-dark d-flex align-items-center">
+                                    <label for="{{ form.ciudad.id_for_label }}" class="form-label fw-bold text-dark">
                                         <i class="fas fa-map-marker-alt text-success me-2"></i>
                                         {{ form.ciudad.label }}
                                     </label>
@@ -173,7 +185,9 @@
                                     {% if form.ciudad.errors %}
                                     <div class="text-danger small mt-2">
                                         <i class="fas fa-exclamation-triangle me-1"></i>
-                                        {{ form.ciudad.errors|join:", " }}
+                                        {% for error in form.ciudad.errors %}
+                                            {{ error }}
+                                        {% endfor %}
                                     </div>
                                     {% endif %}
                                 </div>
@@ -181,7 +195,7 @@
                         </div>
 
                         <!-- Nota informativa -->
-                        <div class="alert alert-info d-flex align-items-center" role="alert">
+                        <div class="alert alert-info d-flex align-items-center border-0" role="alert" style="background-color: rgba(23, 162, 184, 0.1); border-left: 4px solid #17a2b8 !important;">
                             <i class="fas fa-info-circle me-2 fs-5"></i>
                             <small>
                                 Los campos marcados con <span class="text-danger fw-bold">*</span> son obligatorios.
@@ -205,20 +219,32 @@
 </div>
 
 <style>
-/* Estilos mejorados para campos de formulario */
+/* Estilos mejorados para campos de formulario - Estilo registrar_aula.html */
 .form-control, .form-select {
     border-radius: 8px;
-    border: 1px solid #ced4da;
+    border: 2px solid #e0e0e0;
     padding: 0.75rem 1rem;
     font-size: 1rem;
-    transition: all 0.25s ease;
+    transition: all 0.3s ease;
     background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .form-control:focus, .form-select:focus {
     border-color: #1d8348;
-    box-shadow: 0 0 0 0.25rem rgba(29, 131, 72, 0.1);
+    box-shadow: 0 0 0 0.25rem rgba(29, 131, 72, 0.15);
     outline: none;
+    background-color: #fff;
+}
+
+.form-control:hover, .form-select:hover {
+    border-color: #28a745;
+}
+
+/* Labels mejorados */
+.form-label {
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
 }
 
 /* Contenedor personalizado para el campo de fecha */
@@ -228,12 +254,25 @@
 
 .date-picker-container input[type="date"] {
     width: 100%;
-    padding-right: 2.8rem;
+    padding-right: 3rem;
     border-radius: 8px;
-    border: 1px solid #ced4da;
+    border: 2px solid #e0e0e0;
     font-size: 1rem;
     background-color: #fff;
     cursor: pointer;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.date-picker-container input[type="date"]:focus {
+    border-color: #1d8348;
+    box-shadow: 0 0 0 0.25rem rgba(29, 131, 72, 0.15);
+    outline: none;
+}
+
+.date-picker-container input[type="date"]:hover {
+    border-color: #28a745;
 }
 
 /* Ocultar flechas y botones nativos en WebKit */
@@ -249,44 +288,82 @@
     z-index: 5;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
-    border: 1px solid #ced4da;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border: 2px solid #e0e0e0;
     border-left: none;
     background-color: #f8f9fa;
+    transition: all 0.3s ease;
 }
 
 .date-picker-icon:hover {
     background-color: #e9ecef;
+    border-color: #28a745;
 }
 
-/* Botones */
+/* Botones mejorados */
 .btn-lg {
     padding: 0.75rem 1.5rem;
     border-radius: 8px;
-    font-weight: 500;
-    transition: all 0.2s ease;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-transform: none;
 }
 
 .btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
 }
 
-/* Mensajes de error */
+.btn-outline-secondary {
+    border: 2px solid #6c757d;
+    color: #6c757d;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #6c757d;
+    color: white;
+    border-color: #6c757d;
+}
+
+/* Mensajes de error mejorados */
 .text-danger.small {
     font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+/* Secciones del formulario */
+.border-bottom {
+    border-color: rgba(12, 75, 51, 0.2) !important;
+}
+
+/* Alertas mejoradas */
+.alert {
+    border-radius: 10px;
+    border-left-width: 4px !important;
+}
+
+/* Textos pequeños */
+small.text-muted {
+    color: #6c757d !important;
+    font-size: 0.85rem;
 }
 
 /* Responsive */
 @media (max-width: 576px) {
     .card-body {
-        padding: 1.25rem !important;
+        padding: 1.5rem !important;
     }
+    
     .btn-lg {
         width: 100%;
         justify-content: center;
     }
-    .d-flex.flex-sm-row > .btn {
-        width: auto;
+    
+    h5 {
+        font-size: 1.1rem;
     }
 }
 </style>
